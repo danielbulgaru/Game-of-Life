@@ -31,6 +31,7 @@
     let cells //provides us 32bit access (faster)
     let next // next generation of cells    
 
+ 
 
     let width=0 
     resized()
@@ -78,9 +79,51 @@
         //based upon whether the (i'th) cell is alive, and the count of it's live neigbours - set next[i] to "dead or alive" 
 
 
+        // Any live cell with two or three live neighbours survives.
+        // Any dead cell with three live neighbours becomes a live cell.
+        // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+
         //Your code goes here :-
 
+        for (let i=0; i < cells.length - 1; i++) {
+            let liveN = 0;
+            if (cells[i-1] == alive){
+                liveN++
+            }
+            if (cells[i+1] == alive){
+                liveN++
+            }
+            if (cells[i-w] == alive){
+                liveN++
+            }
+            if (cells[i+w] == alive){
+                liveN++
+            }
+            if (cells[i-w-1] == alive){
+                liveN++
+            }
+            if (cells[i-w+1] == alive){
+                liveN++
+            }
+            if (cells[i+w-1] == alive){
+                liveN++
+            }
+            if (cells[i+w+1] == alive){
+                liveN++
+            }
 
+
+            if (cells[i] == alive && (liveN == 2 || liveN == 3)){
+                next[i] = alive
+            }
+
+            else if (liveN == 3 && cells[i] == dead){
+                next[i] = alive
+            }
+
+            else next[i] = dead
+        }
 
 
         //now we copy the next generation into the current for display (see animate())
